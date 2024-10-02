@@ -1,0 +1,50 @@
+name: "Setup UDS CLI"
+
+on:
+  schedule:
+    - cron: "0 4 * * *"
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-defaults:
+    name: Defaults config test
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup UDS CLI with defaults
+        uses: ./
+
+      - name: Verify UDS CLI version
+        run: uds version
+
+  setup-uds:
+    name: Full test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup UDS CLI
+        uses: ./
+        with:
+          version: v0.16.0
+
+      - name: UDS CLI Version
+        run: uds version
+
+      - name: Install k3d
+        run: |
+          curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+
+      - name: Deploy uds k3d core 
+        run: uds deploy k3d-core-slim-dev:latest --confirm
+
+      - name: List installed packages
+        run: uds zarf package list

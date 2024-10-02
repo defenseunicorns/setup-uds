@@ -1,0 +1,63 @@
+name: "Setup UDS CLI"
+description: "Installs UDS CLI"
+
+inputs:
+  version:
+    description: "The version of UDS CLI to install. Uses the latest version if not specified."
+
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      run: |
+        #!/bin/bash
+        # Base url for uds-cli
+        target_dir="${HOME}"
+        version="${{ inputs.version }}"
+
+        # Use latest version if not specified
+        if [ "${version}" == "" ]; then
+          version=$(curl -sIX HEAD https://github.com/defenseunicorns/uds-cli/releases/latest | grep -i ^location: | grep -Eo 'v[0-9]+.[0-9]+.[0-9]+')
+        fi
+
+        release_path="https://github.com/defenseunicorns/uds-cli/releases/download/${version}"
+
+        mkdir -p $target_dir
+
+        # Set the architecture variable
+        case ${{ runner.arch }} in
+          X64)
+            arch="amd64"
+            ;;
+          ARM64)
+            arch="arm64"
+            ;;
+          *)
+            echo "Unsupported architecture, only X64 and ARM64 are supported."
+            exit 1
+            ;;
+        esac
+
+        # Set the filename variable
+        case ${{ runner.os }} in
+          Linux)
+            filename="Linux_${arch}"
+            ;;
+          macOS)
+            filename="Darwin_${arch}"
+            ;;
+          *)
+            echo "Unsupported OS type, only Linux and macOS are supported."
+            exit 1
+            ;;
+        esac
+
+        echo "Downloading UDS CLI ${version} for ${{ runner.os }} ${arch}"
+        curl -sL "${release_path}/uds-cli_${version}_${filename}" -o "${target_dir}/uds"
+        chmod +x "${target_dir}/uds"
+
+
+    - if: ${{ runner.os == 'Linux' || runner.os == 'macOS' }}
+      run: echo "${HOME}" >> $GITHUB_PATH
+      shell: bash
+
