@@ -14,7 +14,7 @@ with:
 
 ```yaml
 jobs:
-  create_pacakge:
+  run_task:
     runs-on: ubuntu-latest
 
     name: Run my cool UDS Task
@@ -36,7 +36,7 @@ jobs:
 
 ```yaml
 jobs:
-  deploy_package:
+  create_and_deploy_bundle:
     runs-on: ubuntu-latest
 
     name: Create & deploy my cool UDS Bundle
