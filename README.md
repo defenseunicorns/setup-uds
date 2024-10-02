@@ -45,7 +45,7 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Install Zarf
+      - name: Install UDS CLI
         uses: defenseunicorns/setup-uds@v0.0.1
         with:
           version: v0.16.0
