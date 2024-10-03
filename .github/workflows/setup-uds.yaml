@@ -45,7 +45,7 @@ jobs:
           k3d cluster delete && k3d cluster create
 
       - name: Deploy test bundle in dev mode 
-        run: uds dev deploy ghcr.io/defenseunicorns/packages/uds-cli/test/publish/ghcr-test:0.0.1 --confirm
+        run: uds dev deploy ghcr.io/defenseunicorns/packages/uds-cli/test/publish/ghcr-test:0.0.1
 
       - name: List installed packages
         run: uds zarf package list
