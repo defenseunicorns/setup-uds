@@ -5,7 +5,7 @@ Make [UDS CLI](https://github.com/defenseunicorns/uds-cli) available to your Git
 ## Usage
 
 ```yaml
-uses: defenseunicorns/setup-uds@v0.0.1
+uses: defenseunicorns/setup-uds@v1.0.0
 with:
   version: <version> # Optional. Defaults to latest.
 ```
@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 1
 
       - name: Install UDS CLI
-        uses: defenseunicorns/setup-uds@v0.0.1
+        uses: defenseunicorns/setup-uds@v1.0.0
         with:
           version: v0.16.0
 
@@ -46,7 +46,7 @@ jobs:
           fetch-depth: 1
 
       - name: Install UDS CLI
-        uses: defenseunicorns/setup-uds@v0.0.1
+        uses: defenseunicorns/setup-uds@v1.0.0
         with:
           version: v0.16.0
 
