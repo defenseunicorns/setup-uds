@@ -42,9 +42,10 @@ jobs:
       - name: Install k3d
         run: |
           curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+          k3d cluster delete && k3d cluster create
 
-      - name: Deploy uds k3d core 
-        run: uds deploy k3d-core-slim-dev:latest --confirm
+      - name: Deploy test bundle in dev mode 
+        run: uds dev deploy ghcr.io/defenseunicorns/packages/uds-cli/test/publish/ghcr-test:0.0.1 --confirm
 
       - name: List installed packages
         run: uds zarf package list
