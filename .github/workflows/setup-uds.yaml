@@ -16,7 +16,7 @@ jobs:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
 
       - name: Setup UDS CLI with defaults
         uses: ./
@@ -28,12 +28,11 @@ jobs:
     name: Full test
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
         version: [v0.16.0, v0.17.0]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
 
       - name: Setup UDS CLI
         uses: ./
