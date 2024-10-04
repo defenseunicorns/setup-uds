@@ -26,7 +26,11 @@ jobs:
 
   setup-uds:
     name: Full test
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        version: [v0.16.0, v0.17.0]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -34,7 +38,7 @@ jobs:
       - name: Setup UDS CLI
         uses: ./
         with:
-          version: v0.16.0
+          version: ${{ matrix.version }}
 
       - name: UDS CLI Version
         run: uds version
