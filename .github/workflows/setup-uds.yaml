@@ -34,6 +34,7 @@ jobs:
       - name: Setup UDS CLI
         uses: ./
         with:
+          # renovate: datasource=github-tags depName=defenseunicorns/uds-cli extractVersion="^v(.*)$" versioning=semver-coerced
           version: v0.16.0
 
       - name: UDS CLI Version
