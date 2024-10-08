@@ -34,6 +34,7 @@ jobs:
       - name: Setup UDS CLI
         uses: ./
         with:
+          # renovate: datasource=github-tags depName=defenseunicorns/uds-cli extractVersion="^v(.*)$" versioning=semver-coerced
           version: v0.16.0
 
       - name: UDS CLI Version
@@ -44,7 +45,7 @@ jobs:
           curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
           k3d cluster delete && k3d cluster create
 
-      - name: Deploy test bundle in dev mode 
+      - name: Deploy test bundle in dev mode
         run: uds dev deploy ghcr.io/defenseunicorns/packages/uds-cli/test/publish/ghcr-test:0.0.1
 
       - name: List installed packages
