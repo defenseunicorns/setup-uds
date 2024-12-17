@@ -17,7 +17,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      
 
       - name: Setup UDS CLI with defaults
         uses: ./
@@ -30,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Setup UDS CLI
         uses: ./
@@ -51,3 +50,29 @@ jobs:
 
       - name: List installed packages
         run: uds zarf package list
+
+  test-error-version:
+    name: Verify error on bad/unavailable version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup UDS CLI with defaults
+        id: error_step
+        uses: ./
+        with:
+          # renovate: datasource=github-tags depName=defenseunicorns/uds-cli versioning=semver
+          version: v0.01.9
+        continue-on-error: true  # Allow the workflow to continue after failure
+
+      - name: The demo step has failed
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          #!/bin/bash
+          if [ "${{ steps.error_step.outcome }}" != "failure" ]; then
+            echo "Expected the step to fail, but it did not!"
+            exit 1
+          else
+            echo "The step failed as expected."
+          fi
