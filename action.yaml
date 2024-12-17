@@ -53,7 +53,10 @@ runs:
         esac
 
         echo "Downloading UDS CLI ${version} for ${{ runner.os }} ${arch}"
-        curl -sL "${release_path}/uds-cli_${version}_${filename}" -o "${target_dir}/uds"
+        curl -f -sL "${release_path}/uds-cli_${version}_${filename}" -o "${target_dir}/uds" || {
+          echo "Error: curl failed to fetch ${version}_${filename}-${arch}"
+          exit 1
+        }
         chmod +x "${target_dir}/uds"
 
 
