@@ -61,7 +61,6 @@ jobs:
         id: error_step
         uses: ./
         with:
-          # renovate: datasource=github-tags depName=defenseunicorns/uds-cli versioning=semver
           version: v0.01.9
         continue-on-error: true  # Allow the workflow to continue after failure
 
