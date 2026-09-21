@@ -53,14 +53,26 @@ runs:
         esac
 
         echo "Downloading UDS CLI ${version} for ${{ runner.os }} ${arch}"
-        curl -f -sL "${release_path}/uds-cli_${version}_${filename}" -o "${target_dir}/uds" || {
-          echo "Error: curl failed to fetch ${version}_${filename}-${arch}"
+        download_url="${release_path}/uds-cli_${version}_${filename}"
+        download_path="$(mktemp "${target_dir}/uds.XXXXXX")"
+        trap 'rm -f "${download_path}"' EXIT
+
+        if ! curl --fail --silent --show-error --location \
+          --retry 3 \
+          --retry-delay 5 \
+          --retry-connrefused \
+          --retry-max-time 60 \
+          "${download_url}" \
+          --output "${download_path}"; then
+          echo "Error: curl failed to fetch ${download_url}"
           exit 1
-        }
-        chmod +x "${target_dir}/uds"
+        fi
+
+        chmod +x "${download_path}"
+        mv "${download_path}" "${target_dir}/uds"
+        trap - EXIT
 
 
     - if: ${{ runner.os == 'Linux' || runner.os == 'macOS' }}
       run: echo "${HOME}" >> $GITHUB_PATH
       shell: bash
-
